@@ -2,6 +2,8 @@
 
 A local demo of a client-facing support workflow: import approved policies, receive a support request, retrieve relevant passages, create a cited draft, and mark it approved after human review. Optional live inference uses **Nebius Token Factory**. The app never sends a reply to a customer.
 
+![Support Studio dashboard with fictional customer request and draft](docs/support-studio-dashboard.png)
+
 This is a portfolio prototype built around the application-layer topics in the [Nebius Agentic AI Builder exam guide](https://nebius.com/certification/agentic-ai): model inference, structured output, retrieval, evaluation and operational controls. **It is not a Nebius certification, a production deployment or evidence of paid client work.**
 
 ## What a client can see

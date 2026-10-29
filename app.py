@@ -96,13 +96,15 @@ def chunks_of(text: str, size: int = 110, overlap: int = 20):
     # retrieve a single chunk containing unrelated shipping rules.
     sections = re.split(r"(?=^##\s)", text, flags=re.MULTILINE)
     for section in sections:
-        words = section.split()
+        lines = section.strip().splitlines()
+        heading = lines[0] if lines and lines[0].startswith("## ") else ""
+        words = ("\n".join(lines[1:]) if heading else section).split()
         if len(words) < 8 and len(sections) > 1:
             continue
         for start in range(0, len(words), size - overlap):
             part = words[start:start + size]
             if part:
-                yield " ".join(part)
+                yield (heading + "\n" if heading else "") + " ".join(part)
             if start + size >= len(words):
                 break
 
@@ -129,9 +131,9 @@ def demo_draft(ticket: dict, sources: list[dict]) -> dict:
             "citations": [],
         }
     lead = sources[0]
-    excerpt = lead["content"][:300].strip()
+    excerpt = re.sub(r"^#{1,6} [^\n]+\n", "", lead["content"]).strip()[:300]
     return {
-        "answer": f"Hello {ticket['customer']}, according to our {lead['title']} policy: {excerpt} Please confirm your order details so our team can check your specific case.",
+        "answer": f"Hello {ticket['customer']}, our policy says: {excerpt} Please send your order details so our team can check your specific case.",
         "follow_up": "A human agent must check the customer's order and edit this draft before using it.",
         "citations": [lead["id"]],
     }
